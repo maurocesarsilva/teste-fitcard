@@ -1,0 +1,34 @@
+CREATE TABLE cadcat
+(
+  id serial primary key,
+  categoria varchar(80) unique
+  )
+
+
+insert into cadcat (categoria) values ('Supermercado');
+insert into cadcat (categoria) values ('Restaurante');
+insert into cadcat (categoria) values ('Borracharia');
+insert into cadcat (categoria) values ('Posto');
+insert into cadcat (categoria) values ('Oficina');
+
+CREATE TABLE cadestabelecimento
+(
+  id serial primary key,
+  agencia varchar(5),
+  bairro varchar(80),
+  categoria varchar(255),
+  cep varchar(9),
+  cnpj varchar(18),
+  complemento varchar(10),
+  conta varchar(8),
+  datacad date,
+  email varchar(80),
+  localidade varchar(80),
+  logradouro varchar(80),
+  nomef varchar(80),
+  numero integer,
+  razaos varchar(80),
+  status varchar(7),
+  telefone varchar(18),
+  uf varchar(2)
+)

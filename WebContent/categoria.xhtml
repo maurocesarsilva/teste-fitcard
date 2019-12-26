@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<title>Cadastro categoria</title>
+
+	<script>
+		function limitInputText(element, limit) {
+
+			if (element.value.length > limit) {
+				element.value = element.value.substring(0, limit);
+			}
+
+		}
+	</script>
+
+</h:head>
+
+<h:body>
+	<ui:include src="/menu.xhtml" />
+
+	<h:form id="formulario">
+
+		<p:growl id="msg" showDetail="false" sticky="false" life="6000"
+			autoUpdate="true" />
+
+		<p:dialog></p:dialog>
+		<p:panelGrid columns="2" style="margin-left:40%; margin-top: 2%">
+
+			<p:outputLabel value="*Categoria: " />
+			<p:inputText value="#{cadCatBean.cadCat.categoria}" required="true"
+				requiredMessage="Informe a categoria"
+				onkeyup="limitInputText(this,50);" />
+
+		</p:panelGrid>
+
+		<br />
+
+		<div style="margin-left: 38%">
+			<p:commandButton value="Salvar" ajax="true" update="@form, formTbl"
+				action="#{cadCatBean.salvar}" style="width: 15%" />
+				
+				<p:commandButton value="Voltar" action="index.jsf" style="width: 15%" 
+				ajax="true" execute="@this" immediate="true" />
+
+
+			<p:commandButton id="btnLimpar" value="Limpar" 
+				actionListener="#{cadCatBean.novo}" 
+				style="width: 15%;" >				
+				<f:ajax render="@form" resetValues="true" />
+				</p:commandButton>	
+		</div>
+	</h:form>
+
+
+
+
+	<br />
+	<br />
+
+	<h:form id="formTbl">
+		<p:dataTable id="tabela" value="#{cadCatBean.list}" var="cad" cellpadding="20"
+			border="1" style="width: 40%;margin:auto">
+			<f:facet name="header">Lista de Estabelecimentos</f:facet>
+
+			<p:column style="width: 20%;">
+				<f:facet name="header">ID</f:facet>
+				<p:outputLabel value="#{cad.id}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Categoria</f:facet>
+				<h:outputText value="#{cad.categoria}" />
+			</p:column>
+
+
+			<p:column style="width: 20%;">
+				<f:facet name="header">Editar</f:facet>
+				<h:commandLink>
+					<p:graphicImage url="resources/img/editar.png" width="25"
+						height="25" />
+					<f:setPropertyActionListener value="#{cad}"
+						target="#{cadCatBean.cadCat}" />
+				</h:commandLink>
+			</p:column>
+
+			<p:column style="width: 20%;">
+				<f:facet name="header">DELETE</f:facet>
+				<h:commandLink action="#{cadCatBean.remove}" id="botaoremover">
+					<p:graphicImage url="resources/img/delete_97403.jpg" width="25"
+						height="25" />
+					<f:setPropertyActionListener value="#{cad}"
+						target="#{cadCatBean.cadCat}" />
+					<f:ajax execute="botaoremover" render="@form :formulario:msg" />
+				</h:commandLink>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+</h:body>
+</html>

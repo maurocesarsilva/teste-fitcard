@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:loadBundle basename="util.ApplicationResources" var="msg" />
+
+<h:head>
+	<title>Cadastro estabelecimento</title>
+
+	<script>
+		function limitInputText(element, limit) {
+
+			if (element.value.length > limit) {
+				element.value = element.value.substring(0, limit);
+			}
+		}
+	</script>
+
+</h:head>
+
+<h:body>
+
+	<ui:include src="/menu.xhtml" />
+
+	<h:form id="formulario">
+		<p:growl id="msg" showDetail="false" sticky="false" life="6000"
+			autoUpdate="true" />
+
+
+		<p:panelGrid columns="1"
+			style="margin:auto; margin-top: 2%; width: 60%;">
+
+			<p:panelGrid columns="2" style="width: 100%;">
+				<f:facet name="header">Cadastro de estabelecimentos</f:facet>
+
+				<p:outputLabel value="*Razão Social: " />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.razaoS}"
+					required="true" requiredMessage="Informe a razão social"
+					style="width: 97%" onkeyup="limitInputText(this,80);" />
+
+				<p:outputLabel value="Nome Fantasia: " />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.nomeF}"
+					required="false" requiredMessage="Informe o nome fantasia"
+					style="width: 97%" onkeyup="limitInputText(this,80);" />
+
+				<p:outputLabel value="*CNPJ" />
+				<p:inputMask value="#{cadEstabelecimentoBean.cadE.cnpj}"
+					mask="99.999.999/9999-99" required="true"
+					pt:placeholder="__.___.___/____-__"
+					requiredMessage="Informe o CNPJ!" style="width: 97%">
+					<f:validator validatorId="util.CnpjValidator" />
+					<f:converter converterId="util.CnpjConverter" />
+				</p:inputMask>
+
+				<p:outputLabel value="E-mail" />
+				<p:inputText style="width: 97%" id="email"
+					value="#{cadEstabelecimentoBean.cadE.email}"
+					validatorMessage="E-mail inválido"
+					onkeyup="limitInputText(this,80);">
+					<f:validateRegex
+						pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+				</p:inputText>
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="4" style="width: 100%;">
+
+
+				<p:outputLabel value="Telefone: " />
+				<p:inputMask style="width: 200px"
+					value="#{cadEstabelecimentoBean.cadE.telefone}"
+					mask="(99) 9 9999-9999" pt:placeholder="(  )9 9999-9999" />
+
+				<p:outputLabel value="Data de Cadastro" />
+				<p:calendar value="#{cadEstabelecimentoBean.cadE.dataCad}"
+					maxdate="#{cadEstabelecimentoBean.cadE.dataCad}" locale="pt"
+					mask="99/99/9999" pattern="dd/MM/yyyy">
+
+				</p:calendar>
+
+
+				<p:outputLabel value="Categoria:" />
+				<p:selectOneMenu style="width: 190px"
+					value="#{cadEstabelecimentoBean.cadE.categoria}">
+					<f:selectItem itemLabel="--[Selecione]--" noSelectionOption="false" />
+					<f:selectItems value="#{cadEstabelecimentoBean.cat}" var="c"
+						itemLabel="#{c.categoria} " itemValue="#{c.categoria}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Status " />
+				<p:selectOneMenu style="width: 190px"
+					value="#{cadEstabelecimentoBean.cadE.status}">
+					<f:selectItem itemValue="Ativo" itemLabel="Ativo" />
+					<f:selectItem itemValue="Inativo" itemLabel="Inativo" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Agencia" />
+				<p:inputMask value="#{cadEstabelecimentoBean.cadE.agencia}"
+					mask="999-9" pt:placeholder="xxx-x">
+				</p:inputMask>
+
+				<p:outputLabel value="Conta" />
+				<p:inputMask value="#{cadEstabelecimentoBean.cadE.conta}"
+					mask="99.999-9" pt:placeholder="xx.xxx-x">
+				</p:inputMask>
+
+				<p:outputLabel value="CEP:" />
+				<p:inputMask value="#{cadEstabelecimentoBean.cadE.cep}"
+					pt:placeholder="Cep" mask="99999-999">
+					<f:ajax event="blur" execute="@this"
+						listener="#{cadEstabelecimentoBean.pesquisaCep}"
+						render="logradouro cidade bairro uf" />
+				</p:inputMask>
+
+				<p:outputLabel value="Logradouro:" />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.logradouro}"
+					id="logradouro" pt:placeholder="Lagradouro"
+					onkeyup="limitInputText(this,80);" />
+
+
+				<p:outputLabel value="Número" />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.numero}"
+					type="number" id="numero" onkeyup="limitInputText(this,5);"
+					pt:placeholder="999" />
+
+				<p:outputLabel value="Complemento" />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.complemento}"
+					id="complemento" pt:placeholder="Complemento"
+					onkeyup="limitInputText(this,10);" />
+
+				<p:outputLabel value="Bairro" />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.bairro}"
+					id="bairro" pt:placeholder="Bairro"
+					onkeyup="limitInputText(this,80);" />
+
+				<p:outputLabel value="Cidade" />
+				<p:inputText value="#{cadEstabelecimentoBean.cadE.localidade}"
+					id="cidade" pt:placeholder="Cidade"
+					onkeyup="limitInputText(this,80);" />
+
+				<p:outputLabel value="UF" />
+				<p:inputMask value="#{cadEstabelecimentoBean.cadE.uf}" id="uf"
+					mask="aa" pt:placeholder="uf">
+				</p:inputMask>
+
+			</p:panelGrid>
+
+		</p:panelGrid>
+		<!-- fim painel grid -->
+		<br />
+
+		<div style="text-align: center">
+			<p:commandButton id="btn" value="Salvar" ajax="true"
+				action="#{cadEstabelecimentoBean.salvar}" update="@form, formDialog"
+				style="width: 22%; height:50px;" />
+
+			<p:commandButton id="btnLimpar" value="Limpar"
+				actionListener="#{cadEstabelecimentoBean.novo}"
+				style="width: 22%; height:50px;">
+				<f:ajax render="@form" resetValues="true" />
+			</p:commandButton>
+
+		</div>
+	</h:form>
+
+	<div style="text-align: center">
+		<p:commandButton value="Consultar - Editar- Exluir"
+			oncomplete="PF('dialogDados').show()" action="#{cadEstabelecimentoBean.novo}" 
+			actionListener="#{cadEstabelecimentoBean.init}" ajax="true" 
+			update="formulario, dialogDados"
+			style="width: 22%; height:50px;">
+		</p:commandButton>
+
+		<p:commandButton value="Categoria" action="categoria.xhtml"
+			style="width: 22%; height:50px;" />
+	</div>
+
+	<p:dialog header="Dados" id="dialogDados" widgetVar="dialogDados"
+		position="center" modal="true" width="80%" resizable="true">
+
+		<h:form id="formDialog">
+
+			<div style="text-align: center;">
+					<p:outputLabel value="Razão social:" />
+					<p:inputText value="#{cadEstabelecimentoBean.cadE.razaoS}"
+						pt:placeholder="Digite a razão social"/>
+
+					<p:commandButton value="Pesquisar"
+						action="#{cadEstabelecimentoBean.buscaPorRazao}" ajax="true"
+						update="@this, tbl" style="width: 22%;" />
+
+					<p:commandButton value="Todos"
+						action="#{cadEstabelecimentoBean.init}" ajax="true"
+						update="@this, tbl" style="width: 22%;" />
+			</div>
+			<br />
+			<p:dataTable id="tbl" value="#{cadEstabelecimentoBean.list}"
+				var="cad" cellpadding="20" border="1">
+				<f:facet name="header">Lista de Estabelecimentos</f:facet>
+
+				<p:column style="width: 100px;">
+					<f:facet name="header">ID</f:facet>
+					<p:outputLabel value="#{cad.id}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">Razão Social</f:facet>
+					<h:outputText value="#{cad.razaoS}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">Nome fantasia</f:facet>
+					<h:outputText value="#{cad.nomeF}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">Cnpj</f:facet>
+					<h:outputText value="#{cad.cnpj}" />
+				</p:column>
+
+				<p:column style="width: 100px;">
+					<f:facet name="header">Editar</f:facet>
+					<p:commandLink ajax="false" update="@form, formulario">
+						<p:graphicImage url="resources/img/editar.png" width="25"
+							height="25" />
+						<f:setPropertyActionListener value="#{cad}"
+							target="#{cadEstabelecimentoBean.cadE}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column style="width: 100px;">
+					<f:facet name="header">DELETE</f:facet>
+					<h:commandLink action="#{cadEstabelecimentoBean.remove}"
+						id="botaoremover">
+						<p:graphicImage url="resources/img/delete_97403.jpg" width="25"
+							height="25" />
+						<f:setPropertyActionListener value="#{cad}"
+							target="#{cadEstabelecimentoBean.cadE}" />
+						<f:ajax execute="botaoremover" render="@form :formulario:msg" />
+					</h:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+</h:body>
+
+</html>

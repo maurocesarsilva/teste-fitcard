@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+
+	<persistence-unit name="testePraticoFitCard">
+
+		<class>model.CadEstabelecimento</class>
+		<class>model.CadCat</class>
+
+		<properties>
+			<!-- configurações de conexão do banco -->
+			<property name="hibernate.connection.driver_class"
+				value="org.postgresql.Driver" />
+				
+			<property name="hibernate.connection.url"
+				value="jdbc:postgresql://ec2-174-129-255-15.compute-1.amazonaws.com:5432/dqbshos9cvcpn?sslmode=require" />
+				
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.PostgreSQLDialect" />
+				
+			<property name="hibernate.connection.username"
+				value="mgtiffssoygaie" />
+				
+			<property name="hibernate.connection.password"
+				value="da810ecb91d809dea477297fad203a9dbecad9defa2c831915697608127d4d57" />
+				
+			<property name="hibernate.format_sql" value="false" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+		</properties>
+	</persistence-unit>
+</persistence>
